@@ -121,6 +121,10 @@ cargo build --release
 
 Comments are marked with double forward slash: `//`.
 
+### Style
+
+It's considered good style in Rust to put dot-notated methods on a subsequent line, with a greater indent, than the object the method belongs to.
+
 ### Preludes (stuff you don't have to import)
 
 [Some standard library stuff](https://doc.rust-lang.org/std/prelude/index.html), `std::prelude`, is available by default and doesn't need to be imported. Some libraries within `std` also have their own preludes.
@@ -140,5 +144,11 @@ Assignment is done with the equal sign (`=`).
 Right of the assignment operator, we call the constructor of some type, such as `String::new()`. (Rust's standard `String` type is growable and UTF-8 encoded.)
 
 ### Handling console input
+
+The `std::io::stdin()` function returns an instance of the `std::io::Stdin` type.
+
+This type has a `read_line` method that can be called using dot notation. You have to pass this method the memory address of a previously declared mutable `String` variable that it can write to as a buffer,: `user_input_var.read_line(&mut buffer_var);`.
+
+The `read_line` method writes the line to the buffer (as a side effect). It also returns a `std::Result` object, which is an Enum that takes a value of either "Ok" or "Err".
 
 https://rust-book.cs.brown.edu/ch02-00-guessing-game-tutorial.html#receiving-user-input
