@@ -63,4 +63,38 @@ rustc main.rs
 
 Rust (obviously) is an "ahead-of-time compiled" language rather than an interpreted one, so the executable can be run on any computer (with a little help from `chmod`).
 
-Left off at: https://rust-book.cs.brown.edu/ch01-03-hello-cargo.html
+## Project management with cargo
+
+Cargo is the build system and package manager for Rust and should be installed along with `rustc`. To verify, use:
+
+``` bash
+cargo --version
+```
+
+You can create a new project with:
+
+``` bash
+cargo new projectname
+```
+
+This will create a folder, a basic `.toml` (Tom's Obvious, Minimal Language) file, a `src` subfolder with `main.rs`, and a git repository (unless you're already inside one.)
+
+To compile and run a debug version with a single command:
+
+```bash
+cargo run
+```
+
+The default build is a debug build and will be placed in `./target/debug`. A lockfile will also be created in the project root.
+
+To compile a release build, use:
+
+``` bash
+cargo build --release
+```
+
+To check that the code is compilable without actually compiling:
+
+``` bash
+cargo check
+```
