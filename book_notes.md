@@ -98,3 +98,9 @@ To check that the code is compilable without actually compiling:
 ``` bash
 cargo check
 ```
+
+## Rust basics
+
+You import dependencies with the `use` keyword. The standard library is `std`. For instance, import the standard input/output library with `use std::io;`
+
+[Some standard library stuff](https://doc.rust-lang.org/std/prelude/index.html), `std::prelude`, is available by default and doesn't need to be imported. Some libraries within `std` also have their own preludes.
