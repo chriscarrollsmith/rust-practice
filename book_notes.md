@@ -54,9 +54,9 @@ fn main() {
 }
 ```
 
-Lines inside the function body should end with a semicolon. The exclamation point indicates that `println` is a macro, not a function.
+Lines inside the function body should end with a semicolon. The exclamation point indicates that `println` is an unscoped macro that gets expanded at compile time, not a scoped function that gets called at execution time. (Macros execute faster but take up more space in the compiled binary.)
 
-### Compiling with rustc
+### Compiling with `rustc`
 
 To compile and run our code:
 
@@ -65,7 +65,7 @@ rustc main.rs
 ./main
 ```
 
-Rust (obviously) is an "ahead-of-time compiled" language rather than an interpreted one, so the executable can be run on any computer (with a little help from `chmod`).
+Rust is an "ahead-of-time compiled" language rather than an interpreted one, so the executable can be distributed and run without a language interpreter.
 
 Usually we'll compile with `cargo`, not `rustc`.
 
@@ -85,7 +85,11 @@ You can create a new project with:
 cargo new projectname
 ```
 
-This will create a folder, a basic `.toml` (Tom's Obvious, Minimal Language) file, a `src` subfolder with `main.rs`, and a git repository (unless you're already inside one.)
+This will create a folder, a basic `.toml` (Tom's Obvious, Minimal Language) config file, a `src` subfolder with `main.rs`, and a git repository (unless you're already inside one.) Navigate into the project folder with:
+
+``` bash
+cd projectname
+```
 
 ### Check that code compiles
 
@@ -109,11 +113,13 @@ The default build is a debug build and will be placed in `./target/debug`. A loc
 
 ### Compiling release code
 
-To compile a release build, use:
+To compile an optimized release build, use:
 
 ``` bash
 cargo build --release
 ```
+
+You'll want to use a release build for any benchmarking you do.
 
 ## Rust basics
 
@@ -123,7 +129,16 @@ Comments are marked with double forward slash: `//`.
 
 ### Style
 
-It's considered good style in Rust to put dot-notated methods on a subsequent line, with a greater indent, than the object the method belongs to.
+It's considered good style in Rust to put dot-notated method calls on a subsequent line, with a greater indent, than the object the method belongs to. E.g.,
+
+``` rust
+let mut buffer = String::new();
+std::io::stdin()
+    .read_line(&mut buffer)
+    .expect("Failed to read line");
+```
+
+This creates an empty mutable `String` variable named `buffer`, then calls the `read_line` method on the standard input object, passing it a mutable reference to `buffer`. The `expect` method is called to handle any errors that might occur when reading input.
 
 ### Preludes (stuff you don't have to import)
 
@@ -133,7 +148,9 @@ It's considered good style in Rust to put dot-notated methods on a subsequent li
 
 You import dependencies with the `use` keyword. The standard library is `std`. For instance, import the standard input/output library with `use std::io;`.
 
-Or, instead of explicitly importing `io` from `std`, we could simply use it in our code with the `std::` prefix, e.g., `std::io::stdin()`. The `::` operator is used in Rust to access "associated" objects and functions.
+Or, instead of explicitly importing `io` from `std`, we could simply use it in our code with the `std::` prefix, e.g., `std::io::stdin()`.
+
+The `::` operator is used in Rust to access "associated" objects and functions.
 
 ### Creating variables
 
@@ -145,10 +162,32 @@ Right of the assignment operator, we call the constructor of some type, such as 
 
 ### Handling console input
 
-The `std::io::stdin()` function returns an instance of the `std::io::Stdin` type.
+The `std::io::stdin()` function returns an instance of the `std::io::Stdin` type (which is a handle for the standard input from the terminal).
 
-This type has a `read_line` method that can be called using dot notation. You have to pass this method the memory address of a previously declared mutable `String` variable that it can write to as a buffer,: `user_input_var.read_line(&mut buffer_var);`.
+This type has a `read_line` method that can be called using dot notation. You have to pass this method the memory address of a previously declared mutable `String` variable that it can write to as a buffer: `stdin_var.read_line(&mut buffer_var);`.
 
-The `read_line` method writes the line to the buffer (as a side effect). It also returns a `std::Result` object, which is an Enum that takes a value of either "Ok" or "Err".
+The `read_line` method writes the line to the buffer (as a side effect). It also returns a `std::Result` object, which is an Enum that takes a value of either "Ok" or "Err". As in C, the ampersand (`&`) indicates a "reference". The `Result` type has an `expect` method we can call, which terminates the program if `Result` is an "Err".
 
-https://rust-book.cs.brown.edu/ch02-00-guessing-game-tutorial.html#receiving-user-input
+### String formatting
+
+We can use curly braces in printed output to insert a variable placeholder: `println!("String value: {some_str}");`.
+
+Alternatively, we can use empty braces and then provide comma-separated values to insert in sequence. Or we can combine the two syntaxes: `println!("{x} + {} = {}", y, x + y)`.
+
+### Dependency management
+
+To add or remove dependencies ("crates") in your manifest, you can use `cargo add` and `cargo remove`.
+
+To update a dependency to the latest non-breaking version compatible with your manifest (i.e., only patch-level increments), use `cargo update`. For potentially breaking updates (major/minor-level increments), use `cargo update --breaking`.
+
+### Traits
+
+Some libraries have "traits" you may need to import to enable certain methods or behaviors. Like, to use ranges in random number generators, you need to `use rand::Rng`. (Rust's range syntax is: `start..=end`.)
+
+For documentation on what traits are available from the dependencies in your project, you can run `cargo doc --open` to open consolidated documentation for all your project dependencies in a web browser.
+
+### Comparing numbers
+
+`std::cmp::Ordering`
+
+https://rust-book.cs.brown.edu/ch02-00-guessing-game-tutorial.html#comparing-the-guess-to-the-secret-number
