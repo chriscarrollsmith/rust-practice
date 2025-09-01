@@ -188,6 +188,28 @@ For documentation on what traits are available from the dependencies in your pro
 
 ### Comparing numbers
 
-`std::cmp::Ordering`
+Comparable types have a `.cmp` method that takes as its argument an ampersand-prefixed "reference" to a variable to compare against. This method returns one of three enum values from `std::cmp::Ordering`: "Greater", "Less", or "Equal".
 
-https://rust-book.cs.brown.edu/ch02-00-guessing-game-tutorial.html#comparing-the-guess-to-the-secret-number
+### Pattern matching
+
+Instead of `if-else` conditionals, the Rust community prefers "pattern matching" with a `match` expression for better safety, readability, and compile-time "jump table" optimization. The comma-separated "arms" of a `match` statement include a pattern on the left, followed by `=>`, and then the outcome logic to execute if the pattern matches.
+
+One common place to use this is in handling `Result` values, e.g., ` match fn_call() { Ok(value) => value, Err(e) => println!("Error: {e}") }`.
+
+### Coercing one type to another
+
+Instead of forcing the user to always create a unique new variable name, Rust allows shadowing (re-declaring the same variable name, typically with a different type).
+
+We can coerce a string to an integer type (or perform other conversions) with the `parse` method. `parse` uses the type of the variable being assigned to to determine exactly what conversion logic to use. `parse` returns a `std::Result` object, which you must handle with `expect` or `unwrap` to get the converted value.
+
+### Loops
+
+You can create an infinite loop with `loop {}` and can break it with `break`.
+
+## Common programming concepts as they apply to Rust
+
+### Mutability
+
+Variables in Rust are immutable by default.
+
+https://rust-book.cs.brown.edu/ch03-00-common-programming-concepts.html
