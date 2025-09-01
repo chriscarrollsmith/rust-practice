@@ -208,8 +208,22 @@ You can create an infinite loop with `loop {}` and can break it with `break`.
 
 ## Common programming concepts as they apply to Rust
 
-### Mutability
+### Mutable variables
 
-Variables in Rust are immutable by default.
+Variables in Rust (declared with `let`) are immutable by default, but you can make them mutable with `let mut`. If you try to assign a new value to an immutable variable, the compiler will helpfully flag that you should consider making it mutable.
 
-https://rust-book.cs.brown.edu/ch03-00-common-programming-concepts.html
+### Constants
+
+In addition to declaring variables with `let`, you can also declare constants with `const`. The convention in Rust is to use screaming snake case for constant names. Unlike variables, which can only be used in a function, constants can be declared in any scope, including global. You must always annotate the constant type.
+
+You may never use `mut` with `const`; they are always immutable. They can be computed values, but the computation must be a constant expression; it can't use variables or values that might change at runtime.
+
+### Shadowing
+
+Interestingly, you aren't required to use `mut` to shadow a variable; you just have to declare it with `let`. For instance, `let x = 2; let x = x + 2;` will set `x` to `2` and then `4`, but in both cases the variable will be immutable after the assignment.
+
+Also, variable assignments are scoped, so we can do `let x = 2` in an outer scope and then `let x = x + 2` in a subordinate scope, and the variable in the outer scope will continue to have an immutable value of `2` even as the variable gets shadowed in the child scope.
+
+(Fun Rust fact: you can create a new child scope with curly braces (`{}`) even without attaching them to a loop or conditional.)
+
+https://rust-book.cs.brown.edu/ch03-02-data-types.html
