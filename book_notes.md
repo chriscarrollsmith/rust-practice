@@ -226,4 +226,24 @@ Also, variable assignments are scoped, so we can do `let x = 2` in an outer scop
 
 (Fun Rust fact: you can create a new child scope with curly braces (`{}`) even without attaching them to a loop or conditional.)
 
-https://rust-book.cs.brown.edu/ch03-02-data-types.html
+## Data types
+
+### Scalar types
+
+Integers: `i8`/`u8`, ... `i128`/`u128`, `isize`/`usize` (64 bits if you’re on a 64-bit architecture and 32 bits if you’re on a 32-bit architecture)
+
+    - You can use `_` as a separator to improve readability, e.g. for decimals stored as integers; it doesn't change the value
+    - You can add a suffix to specify type (e.g., `57u8`) or a prefix to specify base (e.g., `0b1111_0101` for binary, `0o77` for octal, `0x1A` for hexadecimal)
+    - The `b` prefix specifies a byte literal (`u8`)
+    - The default `int` type in Rust is `i32`
+    - You use `isize` and `usize` for indexing a collection, which will be the same size as your machine's address space
+    - During dev, runtime integer overflow causes a panic (exit with error code); during release, it causes wrapping (reverts to 0)
+    - Handle overflow with `wrapping_`, `checked_`, `overflowing_`, or `saturating_` methods
+    - Integer division truncates toward 0
+    - Two's complement storage means range for a given bit size n is -2^(n-1) to 2^(n-1)- 1 (e.g., `i8` is -128 to 127)
+
+- Floating-point numbers: `f32` or `f64` (always signed)
+- Booleans: `bool` (1 byte)
+- Characters (UTF-8): `char` (specify with single quotes, as opposed to double quotes for strings; 4 bytes)
+
+https://rust-book.cs.brown.edu/ch03-02-data-types.html#compound-types
