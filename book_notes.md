@@ -246,4 +246,25 @@ Integers: `i8`/`u8`, ... `i128`/`u128`, `isize`/`usize` (64 bits if you’re on 
 - Booleans: `bool` (1 byte)
 - Characters (UTF-8): `char` (specify with single quotes, as opposed to double quotes for strings; 4 bytes)
 
-https://rust-book.cs.brown.edu/ch03-02-data-types.html#compound-types
+### Compound types
+
+- Tuples(fixed size, immutable by default):
+    - Each position has a type: `let tuple: (i32, f64, u8) = (500, 6.4, 1)`
+    - Destructure a tuple like `let (x, y, z) = tuple;` or access by index like `let x = tuple.0;`
+    - You can make a tuple mutable with `let mut`
+    - In contrast to Python's default return value of `None`, Rust expressions implicitly return an empty tuple `()` (a.k.a. "unit") by default
+
+``` rust
+fn print_hello() {
+    println!("Hello!");
+}
+
+let result = print_hello();
+println!("Result: {:?}", result); // ":?" is debug formatter
+// Result: ()
+```
+
+- Arrays(immutable, fixed size): each position has a type that must be declared: `let array: [i32; 3] = [1, 2, 3]`
+- Vectors(mutable, dynamic size): `let mut vector: Vec<i32> = Vec::new();`
+
+https://rust-book.cs.brown.edu/ch03-02-data-types.html#the-array-type
