@@ -248,23 +248,58 @@ Integers: `i8`/`u8`, ... `i128`/`u128`, `isize`/`usize` (64 bits if you’re on 
 
 ### Compound types
 
-- Tuples(fixed size, immutable by default):
+#### Tuples (fixed size, immutable by default)
+
     - Each position has a type: `let tuple: (i32, f64, u8) = (500, 6.4, 1)`
     - Destructure a tuple like `let (x, y, z) = tuple;` or access by index like `let x = tuple.0;`
     - You can make a tuple mutable with `let mut`
-    - In contrast to Python's default return value of `None`, Rust expressions implicitly return an empty tuple `()` (a.k.a. "unit") by default
+    - In contrast to Python's default return value of `None`, Rust expressions implicitly return an empty tuple `()` (a.k.a. "unit") by default:
+    ``` rust
+    let result = println!("Hello!");
+    println!("Result: {:?}", result); // ":?" is debug formatter
+    // Result: ()
+    ```
 
-``` rust
-fn print_hello() {
-    println!("Hello!");
-}
+#### Arrays (immutable, fixed size)
 
-let result = print_hello();
-println!("Result: {:?}", result); // ":?" is debug formatter
-// Result: ()
-```
+- Array declarations will infer the size and type, or we can explicitly declare both: `let array: [i32; 3] = [1, 2, 3]`.
+- To initialize an array in which all elements have the same value, we can use the `[value; length]` syntax: `let array = [0; 20]` for an array of 20 zeros. Note the use of a semicolon, not a comma!
+- Unlike a tuple, every item in an array must have the same type.
+- Arrays use stack memory, which makes them faster but less flexible than vectors (which are mutable and live on the heap).
+- Array positions are accessed by square-bracketed index, starting at 0: `let first = array[0];`
+- When accessing an array position, Rust performs a runtime check to ensure it's within bounds, and if not, it panics. This is a memory safety feature of Rust not present in some other languages.
 
-- Arrays(immutable, fixed size): each position has a type that must be declared: `let array: [i32; 3] = [1, 2, 3]`
-- Vectors(mutable, dynamic size): `let mut vector: Vec<i32> = Vec::new();`
+#### Vectors(mutable, dynamic size)
 
-https://rust-book.cs.brown.edu/ch03-02-data-types.html#the-array-type
+- `let mut vector: Vec<i32> = Vec::new();`
+- Vectors are allocated on the heap and can grow or shrink in size.
+
+## Functions
+
+- By convention, Rusts uses snake_case for function names.
+- Functions can be defined after they are called, as long as they're in the same or a parent scope.
+- Technically, a function parameter is the variable and the argument is the value passed, but the terms are mostly used interchangeably.
+- Declaring parameter types is required
+- Functions can optionally end in an "expression," which will be treated as the "implicit return" value of the function
+- The function's return type must be explicitly declared in the signature with `->` followed by the type (e.g., `fn five() -> i32 { 5 }`).
+
+## Statements and expressions
+
+Rust distinguishes between statements and expressions.
+
+### Characteristics
+
+- Statements don't return values, while expressions do.
+- You can assign an expression to a variable, but you can't assign a statement.
+- Statements end with a semicolon, while expressions do not. (So you can convert an expression to a statement by adding a semicolon.)
+
+### Classification
+
+- Variable assignments and function definitions are statements.
+- Most everything else in Rust, including a macro call or a scope block declared with curly braces, is an expression (unless you end it with a semicolon).
+
+## Comments
+
+Rust supports single-line (or end-of-line) comments prefixed with `//`, as well as multi-line comments enclosed in `/*` and `*/`.
+
+https://rust-book.cs.brown.edu/ch03-05-control-flow.html
