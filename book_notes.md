@@ -292,6 +292,7 @@ Rust distinguishes between statements and expressions.
 - Statements don't return values, while expressions do.
 - You can assign an expression to a variable, but you can't assign a statement.
 - Statements end with a semicolon, while expressions do not. (So you can convert an expression to a statement by adding a semicolon.)
+- An explicit `return` or `break` will work the same regardless of whether followed by a semicolon.
 
 ### Classification
 
@@ -302,4 +303,24 @@ Rust distinguishes between statements and expressions.
 
 Rust supports single-line (or end-of-line) comments prefixed with `//`, as well as multi-line comments enclosed in `/*` and `*/`.
 
-https://rust-book.cs.brown.edu/ch03-05-control-flow.html
+## Control flow
+
+### Conditional statements
+
+Rust's `if`-`else if`-`else` syntax is fairy standard, with the code to execute enclosed in curly braces. The condition must be a `bool`; there's no truthy/falsy evaluation in Rust.
+
+You assign the implicit return value of an `if`-`else` expression using `let`, e.g., `let y = if condition { 5 } else { 6 };`. However, the return types of the different arms must be matched.
+
+### Loops
+
+Rust supports three types of loops: `loop`, `while`, and `for`.
+
+- `loop` will run until you explicitly `break` it or `return` from the function that contains it.
+- `continue` will skip the rest of the current iteration and start the next one.
+- You can optionally follow `break` with a value to be returned from the loop expression, e.g., `break 5;`.
+- `break` and `continue` apply to the innermost loop by default, but you can use a loop label to specify the loop to break (e.g., `'outer_loop: loop {}` and `break 'outer_loop;`—the apostrophe prefix is called a "tick").
+- `for` loops iterate over an iterable object (e.g., `for element in array`) or a range of numbers (e.g., `1..4`).
+
+## Ownership
+
+https://rust-book.cs.brown.edu/ch04-00-understanding-ownership.html
